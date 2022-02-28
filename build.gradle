@@ -1,0 +1,55 @@
+plugins {
+    id 'groovy'
+    id 'groovy-gradle-plugin'
+    id 'maven-publish'
+}
+
+group 'org.minecraftplus.gradle'
+version '0.1.0'
+
+sourceSets {
+    assetator
+}
+
+configurations {
+    assetatorImplementation.extendsFrom implementation
+}
+
+jar {
+    sourceSets.each {set ->
+        from set.output
+    }
+}
+
+gradlePlugin {
+    plugins {
+        assetator {
+            id = 'org.minecraftplus.gradle.assetator'
+            displayName = 'Assetator'
+            description = 'Plugin that allows generating minecraft asset index from resource list'
+            implementationClass = 'org.minecraftplus.gradle.assetator.AssetatorPlugin'
+        }
+    }
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "minecraftplus"
+            url = "https://maven.minecraftplus.org"
+            allowInsecureProtocol = false
+
+            if (project.version.toString().endsWith("-SNAPSHOT")) {
+                url = url.toString().concat("/snapshots")
+            } else {
+                url = url.toString().concat("/releases")
+            }
+
+            // To know how use credentials see https://docs.gradle.org/current/samples/sample_publishing_credentials.html
+            credentials(PasswordCredentials)
+            authentication {
+                basic(BasicAuthentication)
+            }
+        }
+    }
+}
