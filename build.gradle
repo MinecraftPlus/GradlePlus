@@ -7,6 +7,10 @@ plugins {
 group 'org.minecraftplus.gradle'
 version '0.1.0'
 
+java.toolchain {
+    languageVersion = JavaLanguageVersion.of(8)
+}
+
 sourceSets {
     assetator
 }
