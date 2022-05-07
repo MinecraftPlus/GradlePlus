@@ -15,6 +15,10 @@ sourceSets {
     assetator
 }
 
+dependencies {
+    implementation gradleApi()
+}
+
 configurations {
     assetatorImplementation.extendsFrom implementation
 }
